@@ -49,7 +49,6 @@ class Coco(data.Dataset):
         # Update config
         self.config = self.default_config
         self.config = dict_update(self.config, config)
-        # self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.device = "cpu"
 
         self.transforms = transform
@@ -304,7 +303,7 @@ class Coco(data.Dataset):
             labels_res = torch.zeros((2, H, W)).type(torch.FloatTensor).to(self.device)
             input.update({'labels_res': labels_res})
 
-            if (self.enable_homo_train == True and self.action == 'train') or (self.enable_homo_val and self.action == 'val'):  # we don't fall in this code so skip to-do
+            if (self.enable_homo_train == True and self.action == 'train') or (self.enable_homo_val and self.action == 'val'):
                 homography = self.sample_homography(np.array([2, 2]), shift=-1,
                                                     **self.config['augmentation']['homographic']['params'])
 
@@ -325,7 +324,7 @@ class Coco(data.Dataset):
                 # labels = torch.from_numpy(labels)
                 # warped_labels = self.inv_warp_image(labels.squeeze(), inv_homography, mode='nearest').unsqueeze(0)
                 ##### check #####
-                warped_set = warpLabels(pnts, H, W, homography)  # NO TO DO: HERE YOU HAVE TO CHANGE pnts TO WARPED
+                warped_set = warpLabels(pnts, H, W, homography)
                 warped_labels = warped_set['labels']
                 # if self.transform is not None:
                     # warped_img = self.transform(warped_img)

@@ -381,11 +381,7 @@ class Train_model_heatmap(Train_model_frontend):
             loss.backward()
             self.optimizer.step()
 
-        if skip_val_on_iter0 and n_iter == 0:
-            skip_validation_on_this_step = True
-        else:
-            skip_validation_on_this_step = False
-
+        skip_validation_on_this_step = skip_val_on_iter0 and n_iter == 0
         if ((n_iter % tb_interval == 0) and not skip_validation_on_this_step) or task == "val":
             logging.info(
                 "current iteration: %d, tensorboard_interval: %d", n_iter, tb_interval
