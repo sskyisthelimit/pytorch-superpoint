@@ -255,7 +255,7 @@ class Coco(data.Dataset):
             ######
 
             homographies = torch.tensor(homographies, dtype=torch.float32, device=self.device)
-            inv_homographies = torch.stack([torch.inverse(homographies[i, :, :]) for i in range(homoAdapt_iter)], device=self.device)
+            inv_homographies = torch.stack([torch.inverse(homographies[i, :, :]) for i in range(homoAdapt_iter)])
 
             # images
             warped_img = self.inv_warp_image_batch(img_aug.squeeze().repeat(homoAdapt_iter,1,1,1), inv_homographies, mode='bilinear', device=self.device).unsqueeze(0)
