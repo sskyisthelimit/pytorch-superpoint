@@ -18,7 +18,7 @@ class Coco(data.Dataset):
         'validation_size': 100,
         'truncate': None,
         'preprocessing': {
-            'resize': [240, 320]
+            'resize': [480, 640]
         },
         'num_parallel_calls': 10,
         'augmentation': {
@@ -55,7 +55,7 @@ class Coco(data.Dataset):
         self.action = 'train' if task == 'train' else 'val'
 
         # get files
-        base_path = Path(DATA_PATH, 'COCO/' + task + '2014/')
+        base_path = Path(DATA_PATH, 'sentinel_step2_data/' + task)
         # base_path = Path(DATA_PATH, 'COCO_small/' + task + '2014/')
         image_paths = list(base_path.iterdir())
         # if config['truncate']:
@@ -68,31 +68,9 @@ class Coco(data.Dataset):
         sequence_set = []
         # labels
         self.labels = False
-        if self.config['labels']:
-            self.labels = True
-            # from models.model_wrap import labels2Dto3D
-            # self.labels2Dto3D = labels2Dto3D
-            print("load labels from: ", self.config['labels']+'/'+task)
-            count = 0
-            for (img, name) in zip(files['image_paths'], files['names']):
-                p = Path(self.config['labels'], task, '{}.npz'.format(name))
-                if p.exists():
-                    sample = {'image': img, 'name': name, 'points': str(p)}
-
-                    cross_domain_image = img.replace(task + '2014/', task + 'cd' + '2014/')
-                    cross_domain_points = str(p).replace(task + '/', task + 'cd/')
-                    if Path(cross_domain_image).exists() and Path(cross_domain_points).exists():
-                        sample.update({'image_cross_domain': cross_domain_image, 'points_cross_domain': cross_domain_points})
-                    else:
-                        sample.update({'image_cross_domain':  torch.zeros(1), 'points_cross_domain': torch.zeros(1)})
-
-                    sequence_set.append(sample)
-                    count += 1
-            pass
-        else:
-            for (img, name) in zip(files['image_paths'], files['names']):
-                sample = {'image': img, 'name': name}
-                sequence_set.append(sample)
+        for (img, name) in zip(files['image_paths'], files['names']):
+            sample = {'image': img, 'name': name}
+            sequence_set.append(sample)
         self.samples = sequence_set
 
         self.init_var()
