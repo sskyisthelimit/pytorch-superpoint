@@ -55,7 +55,7 @@ class Coco(data.Dataset):
         self.action = 'train' if task == 'train' else 'val'
 
         # get files
-        base_path = Path(DATA_PATH, 'sentinel_step2_data/' + task)
+        base_path = Path(DATA_PATH, task)
         # base_path = Path(DATA_PATH, 'COCO_small/' + task + '2014/')
         image_paths = list(base_path.iterdir())
         # if config['truncate']:
