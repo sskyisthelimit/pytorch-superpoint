@@ -45,6 +45,6 @@ model:
 
 # pretrained: 'logs/magicpoint_synth20/checkpoints/superPointNet_200000_checkpoint.pth.tar' # 'SuperPointNet'
 # pretrained: 'logs/magicpoint_synth_t2/checkpoints/superPointNet_100000_checkpoint.pth.tar'
-pretrained: 'logs/superpoint_coco_single_domain/checkpoints/superPointNet_170400_checkpoint.pth.tar'
+pretrained: 'logs/superpoint_coco_heat2_0/checkpoints/superPointNet_170000_checkpoint.pth.tar'
 
 
