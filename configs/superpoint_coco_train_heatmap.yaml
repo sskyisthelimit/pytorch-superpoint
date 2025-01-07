@@ -2,7 +2,7 @@ data:
     # name: 'coco'
     dataset: 'Coco' # 'coco'
 
-    labels: extact_step_results/
+    labels: /kaggle/input/extract-step-results/extact_step_results
     root: false # typo in naming (not here)
     root_split_txt: false
 

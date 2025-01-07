@@ -64,15 +64,31 @@ class Coco(data.Dataset):
         image_paths = [str(p) for p in image_paths]
         files = {'image_paths': image_paths, 'names': names}
 
-
         sequence_set = []
         # labels
         self.labels = False
-        for (img, name) in zip(files['image_paths'], files['names']):
-            sample = {'image': img, 'name': name}
-            sequence_set.append(sample)
+        if self.config['labels']:
+            self.labels = True
+            # from models.model_wrap import labels2Dto3D
+            # self.labels2Dto3D = labels2Dto3D
+            print("load labels from: ", self.config['labels']+'/'+task)
+            count = 0
+            for (img, name) in zip(files['image_paths'], files['names']):
+                p = Path(self.config['labels'], task, '{}.npz'.format(name))
+                if p.exists():
+                    sample = {'image': img, 'name': name, 'points': str(p)}
+                    sample.update({'image_cross_domain':  torch.zeros(1), 'points_cross_domain': torch.zeros(1)})
+                    sequence_set.append(sample)
+                    count += 1
+            pass
+        else:
+            for (img, name) in zip(files['image_paths'], files['names']):
+                sample = {'image': img, 'name': name}
+                sequence_set.append(sample)
+        
         self.samples = sequence_set
 
+        self.init_var()
         self.init_var()
 
         pass
