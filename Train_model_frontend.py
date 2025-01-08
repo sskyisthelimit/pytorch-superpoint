@@ -178,7 +178,7 @@ class Train_model_frontend(object):
         optimizer = optim.Adam(net.parameters(), lr=lr, betas=(0.9, 0.999))
         return optimizer
 
-    def loadModel(self):
+    def loadModel(self, attr_name=None):
         """
         load model from name and params
         init or load optimizer
@@ -187,7 +187,8 @@ class Train_model_frontend(object):
         model = self.config["model"]["name"]
         params = self.config["model"]["params"]
         print("model: ", model)
-        net = modelLoader(model=model, **params).to(self.device)
+        net = modelLoader(model=model, attr_name=attr_name, 
+                          **params).to(self.device)
         logging.info("=> setting adam solver")
         optimizer = self.adamOptim(net, lr=self.config["model"]["learning_rate"])
 

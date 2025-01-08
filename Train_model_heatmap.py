@@ -698,7 +698,7 @@ if __name__ == "__main__":
     train_agent.train_loader = train_loader
     # train_agent.val_loader = val_loader
 
-    train_agent.loadModel()
+    train_agent.loadModel(attr_name='SuperPointNet')
     train_agent.dataParallel()
     train_agent.train()
 
