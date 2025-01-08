@@ -85,7 +85,7 @@ def train_joint(config, output_dir, args):
     train_agent.val_loader = val_loader
 
     # load model initiates the model and load the pretrained model (if any)
-    train_agent.loadModel()
+    train_agent.loadModel(attr_name=config["model"]["attr_name"])
     train_agent.dataParallel()
 
     try:

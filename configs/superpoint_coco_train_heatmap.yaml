@@ -57,6 +57,7 @@ model:
     # name: 'magic_point'
     # name: 'SuperPointNet_heatmap'
     name: 'SuperPointNet_pretrained'
+    attr_name: 'SuperPointNet'
     params: {
     }
     detector_loss:
