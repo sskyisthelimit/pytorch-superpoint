@@ -56,7 +56,7 @@ training:
 model:
     # name: 'magic_point'
     # name: 'SuperPointNet_heatmap'
-    name: 'SuperPointNet_pretrained'
+    name: 'SuperPointNet'
     attr_name: 'SuperPointNet'
     params: {
     }
