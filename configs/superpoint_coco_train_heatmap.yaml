@@ -85,12 +85,12 @@ model:
             method: '2d'
     other_settings: 'train 2d, gauss 0.2'
 
-retrain: False # set true for new model
-reset_iter: False # set true to set the iteration number to 0
-train_iter: 185000 # 170000
+retrain: True # set true for new model
+reset_iter: True # set true to set the iteration number to 0
+train_iter: 18500 # 170000
 validation_interval: 4000 # 2000
 tensorboard_interval: 4000 # 200
-save_interval: 8000 # 2000
+save_interval: 9250 # 2000
 validation_size: 5
 skip_val_on_iter0: false
 
