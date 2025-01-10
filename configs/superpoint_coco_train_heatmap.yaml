@@ -94,5 +94,5 @@ save_interval: 8000 # 2000
 validation_size: 5
 skip_val_on_iter0: false
 
-pretrained: 'logs/superpoint_coco_heat2_0/checkpoints/superPointNet_170000_checkpoint.pth.tar'
+pretrained: 
 
