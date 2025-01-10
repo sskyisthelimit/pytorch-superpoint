@@ -152,14 +152,14 @@ def get_module(path, name):
         mod = importlib.import_module('{}.{}'.format(path, name))
     return getattr(mod, name)
 
-def get_model(name, attr_name):
+def get_model(name):
     mod = __import__('models.{}'.format(name), fromlist=[''])
-    return getattr(mod, attr_name if attr_name else name)
+    return getattr(mod, name)
 
-def modelLoader(model='SuperPointNet', attr_name=None, **options):
+def modelLoader(model='SuperPointNet', **options):
     # create model
     logging.info("=> creating model: %s", model)
-    net = get_model(model, attr_name)
+    net = get_model(model)
     net = net(**options)
     return net
 
