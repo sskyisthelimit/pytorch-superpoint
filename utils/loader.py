@@ -175,7 +175,7 @@ def xavier_init_weights(module):
             torch.nn.init.constant_(module.bias, 0)
 
 
-def pretrainedLoader(net, optimizer, epoch, path, mode='full', full_path=False):
+def pretrainedLoader(net, optimizer, epoch, path, mode=None, full_path=False):
     
     url = "https://github.com/cvg/LightGlue/releases/download/v0.1_arxiv/superpoint_v1.pth"
     checkpoint_path = "superpoint_v1.pth"
