@@ -180,35 +180,31 @@ class Train_model_frontend(object):
 
     def loadModel(self):
         """
-        load model from name and params
-        init or load optimizer
-        :return:
+        Load model from name and params, and initialize or load optimizer.
         """
         model = self.config["model"]["name"]
         params = self.config["model"]["params"]
         print("model: ", model)
-        net = modelLoader(model=model,
-                          **params).to(self.device)
+        net = modelLoader(model=model, **params).to(self.device)
         logging.info("=> setting adam solver")
         optimizer = self.adamOptim(net, lr=self.config["model"]["learning_rate"])
 
         n_iter = 0
-        ## new model or load pretrained
-        if self.config["retrain"] == True:
+        ## New model or load pretrained
+        if self.config["retrain"]:
             logging.info("New model")
             pass
         else:
             path = self.config["pretrained"]
-            mode = "" if path[-4:] == ".pth" else "full" # the suffix is '.pth' or 'tar.gz'
-            logging.info("load pretrained model from: %s", path)
+            logging.info("Load pretrained model from: %s", path)
             net, optimizer, n_iter = pretrainedLoader(
-                net, optimizer, n_iter, path, mode=mode, full_path=True
+                net, optimizer, n_iter, path, full_path=True
             )
-            logging.info("successfully load pretrained model from: %s", path)
+            logging.info("Successfully loaded pretrained model from: %s", path)
 
         def setIter(n_iter):
             if self.config["reset_iter"]:
-                logging.info("reset iterations to 0")
+                logging.info("Reset iterations to 0")
                 n_iter = 0
             return n_iter
 
@@ -216,6 +212,7 @@ class Train_model_frontend(object):
         self.optimizer = optimizer
         self.n_iter = setIter(n_iter)
         pass
+
 
 
     @property

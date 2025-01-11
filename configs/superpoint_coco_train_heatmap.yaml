@@ -85,7 +85,7 @@ model:
             method: '2d'
     other_settings: 'train 2d, gauss 0.2'
 
-retrain: True # set true for new model
+retrain: False # set true for new model
 reset_iter: True # set true to set the iteration number to 0
 train_iter: 18500 # 170000
 validation_interval: 4000 # 2000

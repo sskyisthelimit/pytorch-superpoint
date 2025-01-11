@@ -6,6 +6,7 @@ import os
 import logging
 from pathlib import Path
 
+import requests
 import numpy as np
 import torch
 import torch.optim
@@ -166,22 +167,52 @@ def modelLoader(model='SuperPointNet', **options):
 
 # mode: 'full' means the formats include the optimizer and epoch
 # full_path: if not full path, we need to go through another helper function
+def xavier_init_weights(module):
+    """Initialize weights of a module using Xavier initialization."""
+    if isinstance(module, torch.nn.Linear) or isinstance(module, torch.nn.Conv2d):
+        torch.nn.init.xavier_uniform_(module.weight)
+        if module.bias is not None:
+            torch.nn.init.constant_(module.bias, 0)
+
+
 def pretrainedLoader(net, optimizer, epoch, path, mode='full', full_path=False):
-    # load checkpoint
-    if full_path == True:
-        checkpoint = torch.load(path)
+    
+    url = "https://github.com/cvg/LightGlue/releases/download/v0.1_arxiv/superpoint_v1.pth"
+    checkpoint_path = "superpoint_v1.pth"
+    response = requests.get(url)
+    with open(checkpoint_path, "wb") as f:
+        f.write(response.content)
+    # Load checkpoint
+    
+    if full_path:
+        checkpoint = torch.load(checkpoint_path, map_location=lambda storage, loc: storage)
     else:
-        checkpoint = load_checkpoint(path)
-    # apply checkpoint
+        checkpoint = load_checkpoint(checkpoint_path)
+    
+    # Handle missing keys with Xavier initialization
+    model_state = net.state_dict()
     if mode == 'full':
-        net.load_state_dict(checkpoint['model_state_dict'])
-        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
-#         epoch = checkpoint['epoch']
-        epoch = checkpoint['n_iter']
-#         epoch = 0
+        checkpoint_state = checkpoint['model_state_dict']
     else:
-        net.load_state_dict(checkpoint)
-        # net.load_state_dict(torch.load(path,map_location=lambda storage, loc: storage))
+        checkpoint_state = checkpoint
+    
+    missing_keys, unexpected_keys = net.load_state_dict(checkpoint_state, strict=False)
+    
+    if missing_keys:
+        logging.info(f"Missing keys in checkpoint: {missing_keys}")
+        for key in missing_keys:
+            if key in model_state:
+                module_name = key.split('.')[0]
+                module = getattr(net, module_name, None)
+                if module is not None:
+                    module.apply(xavier_init_weights)
+    
+    if mode == 'full':
+        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+        epoch = checkpoint['n_iter']
+    else:
+        epoch = 0
+
     return net, optimizer, epoch
 
 if __name__ == '__main__':
